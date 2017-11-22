@@ -4,7 +4,6 @@ from tqdm import tqdm
 
 import pandas as pd
 
-import pdb
 
 with open('brewers_trim.txt', 'rb') as fi:
     file_txt = fi.readlines()
@@ -34,6 +33,7 @@ for idx, item in tqdm(enumerate(text_pages)):
 
         else:
             body_groups.append(item)
+
                 
 # use some heuristics to find definitions in corpus
 rough_defs = ''.join(body_groups).split('\r\n\r\n')
@@ -61,7 +61,6 @@ for candidate in tqdm(rough_defs):
         else:
             def_set.append(candidate)
 
-
     else:
         def_set[-1] = def_set[-1] + ' ' + candidate
         
@@ -74,6 +73,7 @@ for definition in def_set:
     clean_defs[sents[0]]=''.join(sents[1:])
 
 df = pd.Series(clean_defs).transpose()
-df.sort_index().to_csv('clean_brewers.csv')
+df.index.name='Entry'
+df.name = 'Definition'
+df.sort_index().to_csv('clean_brewers.csv',header=True)
 
-    
